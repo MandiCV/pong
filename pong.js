@@ -119,7 +119,7 @@ function clearCanvas () {
 
 function drawNet() {
     for(let i=0; i<=cvs.height; i+=net.padding) {
-        drawRect(net.x, net.y+1, net.width, net.height, net.color);
+        drawRect(net.x, net.y+i, net.width, net.height, net.color);
     }
 }
 
@@ -136,11 +136,71 @@ function  drawBall() {
     drawCircle(ball.x, ball.y, ball.radius, ball.color);
 }
 
-//JUEGO CANVAS
+function collision(b, p) {
+    b.top = b.y - b.radius;
+    b.bottom = b.y + b.radius;
+    b.left = b.x - b.radius;
+    b.right = b.x + b.radius;
+
+    p.top = p.y;
+    p.bottom = p.y + p.height;
+    p.left = p.x;
+    p.right = p.x + p.width;
+
+    return b.right > p.left &&  b.bottom > p.top && b.top < p.bottom && b.left < p.right
+}
+
+//JUEGO PONG
+function updateComputer() {
+    computer.y += (ball.y - (computer.y + computer.height/2)) * COMPUTER_LEVEL;
+}
+
+function update() {
+    // Movemos la pelota
+    ball.x += ball.velocityX;
+    ball.y += ball.velocityY;
+
+    //Actualizamos nuestra IA
+    updateComputer();
+
+    //Si la bola golpea los laterales del campo...
+    if(ball.y+ball.radius > cvs.height || ball.y - ball.radius < 0){
+        ball.velocityY = -ball.velocityY;
+    }
+
+    // Si la pelota golpea en alguna de las palas...
+    let whatPlayer = ball.x < cvs.width/2 ? playerA : playerB;
+
+    if(collision(ball, whatPlayer)){
+        // Calculamos la nueva dirección X de la pelota
+        const direction = ball.x < cvs.width/2 ? 1 : -1;
+
+        // Calculamos la nueva dirección Y de la pelota
+
+
+    }
+
+}
+function render() {
     clearCanvas();
     drawNet();
     drawScore();
     drawPaddle(localPlayer);
     drawPaddle(computer);
+    drawBall();
+}
 
-  drawText('SALUDOS!!!', 200, 200);
+function gameLoop() {
+    update();
+    render();
+}
+
+function initGameLoop(){
+    setInterval(gameLoop, 1000/FRAME_PER_SECOND);
+}
+
+function play() {
+    initGameLoop();
+}
+
+play();
