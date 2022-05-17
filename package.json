@@ -1,0 +1,26 @@
+{
+  "name": "pong",
+  "version": "1.0.0",
+  "description": "Juego Pong Multijugador en Red",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MandiCV/pong.git"
+  },
+  "author": "Amanda Cascales",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MandiCV/pong/issues"
+  },
+  "homepage": "https://github.com/MandiCV/pong#readme",
+  "dependencies": {
+    "express": "^4.18.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.16"
+  }
+}
