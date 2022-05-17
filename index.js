@@ -9,7 +9,7 @@ const app = express();
 app.use(express.static(__dirname + /public/));
 
 const server = app.listen(port, ()=> {
-    console.log(`Juego POng en http://localhost:${port}`);
+    console.log(`Juego Pong en http://localhost:${port}`);
 });
 
 
@@ -49,6 +49,17 @@ function onConnect( socket ) {
 
 // Declaro los métodos de salida
 
+function sendCounter() {
+    console.log('sendCounter');
+    io.sockets.emit('getCounter', connections.length);
+}
+
+function heartBeat() {
+    io.sockets.emit('hearthBeat', currentState);
+}
+
+// Declaro los manejadores de eventos de entrada
+
 function onStart( state ) {
     console.log('onStart');
 
@@ -61,29 +72,6 @@ function onStart( state ) {
     csp.height = state.height;
     csp.score = state.score;
 }
-
-function sendCounter() {
-    console.log('sendCounter');
-    io.sockets.emit('getCounter', connections.length);
-}
-
-function heartBeat() {
-    io.sockets.emit('hearthBeat', currentState);
-}
-
-function onDisconnect() {
-    console.log('onDisconnect');
-
-    connections = [];
-    currentState = {
-        players: [{},{}],
-        ball: {}
-    }
-
-    //io.sockets.emit('endGame','');
-}
-
-// Declaro los manejadores de eventos de entrada
 
 function onUpdatePlayer( state ) {
 
@@ -102,4 +90,16 @@ function onUpdateBall( state ) {
     currentState.ball.speed = state.speed;
     currentState.ball.velocityX = state.velocityX;
     currentState.ball.velocityY = state.velocityY;
+}
+
+function onDisconnect() {
+    console.log('onDisconnect');
+
+    connections = [];
+    currentState = {
+        players: [{},{}],
+        ball: {}
+    }
+
+    //io.sockets.emit('endGame','');
 }
