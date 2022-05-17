@@ -176,8 +176,18 @@ function update() {
         const direction = ball.x < cvs.width/2 ? 1 : -1;
 
         // Calculamos la nueva dirección Y de la pelota
+        let collidePoint = ball.y - (whatPlayer.y+whatPlayer.height/2);
+        //Normalizamos el punto de colisión
+        collidePoint = collidePoint/(whatPlayer.height/2);
+        //Calculamos el ángulo en radianes
+        const angleRad = collidePoint * Math.PI/4;
 
+        //Modificar la velocidad de la pelota
+        ball.velocityX = ball.speed * Math.cos(angleRad) * direction;
+        ball.velocityY = ball.speed * Math.sin(angleRad);
 
+        //cada vez que golpeamos la pala, incrementamos
+        ball.speed += BALL_DELTA_VELOCITY;
     }
 
 }
